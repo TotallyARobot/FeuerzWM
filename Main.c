@@ -23,30 +23,19 @@ int main(int argc,char *argv[]){
     KeyCode exit = XKeysymToKeycode(dpy, XStringToKeysym("b"));
     fp = popen(args,"r");
 
-
-    KeyCode spawnterm = XKeysymToKeycode(dpy, XK_Return);
-    KeyCode closekey = XKeysymToKeycode(dpy, XStringToKeysym("I"));
-    KeyCode progstart = XKeysymToKeycode(dpy, XStringToKeysym("h"));
-    KeyCode fullscreen = XKeysymToKeycode(dpy, XStringToKeysym("f"));
-    
-    //XSelectInput(dpy,root,KeyPressMask);
     XGrabKey(dpy, NULL, Mod4Mask, root, True, GrabModeAsync, GrabModeAsync);
-    //XGrabKey(dpy, spawnterm,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
-    //XGrabKey(dpy, closekey,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
-    //XGrabKey(dpy, progstart,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
-    //XGrabKey(dpy, fullscreen,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
     XGrabButton(dpy, 1, Mod4Mask, root, True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
     XGrabButton(dpy, 3, Mod4Mask, root, True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
     for(;;){
         if(event.type == KeyPress && event.xkey.keycode == exit)
             break;
-        else if(event.type == KeyPress && event.xkey.keycode == spawnterm)
+        else if(event.type == KeyPress && event.xkey.keycode == XKeysymToKeycode(dpy, XK_Return))
             fp = popen("st","r");
-        else if(event.type == KeyPress && event.xkey.keycode == closekey)
+        else if(event.type == KeyPress && event.xkey.keycode == XKeysymToKeycode(dpy, XStringToKeysym("I")))
             XKillClient(dpy,event.xbutton.subwindow);
-        else if(event.type == KeyPress && event.xkey.keycode == progstart)
+        else if(event.type == KeyPress && event.xkey.keycode == XKeysymToKeycode(dpy, XStringToKeysym("h")))
             fp = popen("dmenu_run","r");
-        else if(event.type == KeyPress && event.xkey.keycode == fullscreen)
+        else if(event.type == KeyPress && event.xkey.keycode == XKeysymToKeycode(dpy, XStringToKeysym("f")))
             XMoveResizeWindow(dpy,event.xbutton.subwindow,0,0,XDisplayWidth(dpy, 0),XDisplayHeight(dpy,0));
         else if(event.type == ButtonPress && event.xbutton.subwindow != None)
         {
