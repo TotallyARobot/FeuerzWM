@@ -44,7 +44,7 @@ int main(int argc,char *argv[]){
         else if(event.type == KeyPress && event.xkey.keycode == progstart)
             fp = popen("dmenu_run","r");
         else if(event.type == KeyPress && event.xkey.keycode == fullscreen)
-            XMoveResizeWindow(dpy,event.xbutton.subwindow,0,0,1920,1080);
+            XMoveResizeWindow(dpy,event.xbutton.subwindow,0,0,XDisplayWidth(dpy, 0),XDisplayHeight(dpy,0));
         else if(event.type == ButtonPress && event.xbutton.subwindow != None)
         {
             XRaiseWindow(dpy,event.xbutton.subwindow);
