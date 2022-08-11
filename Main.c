@@ -5,6 +5,9 @@
 #include<string.h>
 #include<unistd.h>
 
+XWindowAttributes attr;
+XButtonEvent start;
+XEvent event;
 FILE *fp;
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -18,22 +21,22 @@ int main(int argc,char *argv[]){
     Display *dpy = XOpenDisplay(0);
     Window root = RootWindow(dpy,DefaultScreen(dpy));
     KeyCode exit = XKeysymToKeycode(dpy, XStringToKeysym("b"));
+    fp = popen(args,"r");
+
+
     KeyCode spawnterm = XKeysymToKeycode(dpy, XK_Return);
     KeyCode closekey = XKeysymToKeycode(dpy, XStringToKeysym("I"));
     KeyCode progstart = XKeysymToKeycode(dpy, XStringToKeysym("h"));
     KeyCode fullscreen = XKeysymToKeycode(dpy, XStringToKeysym("f"));
-    XWindowAttributes attr;
-    XButtonEvent start;
-    XEvent event;
-    XGrabKey(dpy, exit, Mod4Mask, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, spawnterm,Mod4Mask,DefaultRootWindow(dpy),True,GrabModeAsync,GrabModeAsync);
-    XGrabKey(dpy, closekey,Mod4Mask,DefaultRootWindow(dpy),True,GrabModeAsync,GrabModeAsync);
-    XGrabKey(dpy, progstart,Mod4Mask,DefaultRootWindow(dpy),True,GrabModeAsync,GrabModeAsync);
-    XGrabKey(dpy, fullscreen,Mod4Mask,DefaultRootWindow(dpy),True,GrabModeAsync,GrabModeAsync);
-    XGrabButton(dpy, 1, Mod4Mask, DefaultRootWindow(dpy), True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
-    XGrabButton(dpy, 3, Mod4Mask, DefaultRootWindow(dpy), True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
-    fp = popen(args,"r");
-
+    
+    //XSelectInput(dpy,root,KeyPressMask);
+    XGrabKey(dpy, NULL, Mod4Mask, root, True, GrabModeAsync, GrabModeAsync);
+    //XGrabKey(dpy, spawnterm,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
+    //XGrabKey(dpy, closekey,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
+    //XGrabKey(dpy, progstart,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
+    //XGrabKey(dpy, fullscreen,Mod4Mask,root(dpy),True,GrabModeAsync,GrabModeAsync);
+    XGrabButton(dpy, 1, Mod4Mask, root, True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
+    XGrabButton(dpy, 3, Mod4Mask, root, True,ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
     for(;;){
         if(event.type == KeyPress && event.xkey.keycode == exit)
             break;
